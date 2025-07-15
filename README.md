@@ -2,6 +2,10 @@
 
 [ghostty.org](https://ghostty.org) animation as macOS screen saver
 
+<div align="center">
+<img src="assets/recorded.gif" width="50%">
+</div>
+
 <!-- TODO
 ## Installation
 
