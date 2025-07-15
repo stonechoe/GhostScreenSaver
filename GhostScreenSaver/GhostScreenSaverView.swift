@@ -3,7 +3,12 @@
 //  GhostScreenSaver
 //
 //  Created by @stonechoe on 7/16/25.
+//  
+//  Portions of this code are derived from MIT-licensed projects.
+//  See respective repositories for license details.
 //
+//  References:
+//  - https://github.com/johanremilien/PongScreenSaver
 
 import ScreenSaver
 
