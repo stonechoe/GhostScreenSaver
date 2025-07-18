@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3C3246AF2E26DB83000E6E73 /* ScreenSaver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3246AD2E26DAE8000E6E73 /* ScreenSaver.framework */; };
+		3C55660F2E2A8E3E00BAE962 /* ScreenSaver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3246AD2E26DAE8000E6E73 /* ScreenSaver.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -16,7 +16,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		3C32469C2E26D98B000E6E73 /* GhostScreenSaver */ = {
+		3C5566092E2A8DC400BAE962 /* GhostScreenSaver */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = GhostScreenSaver;
 			sourceTree = "<group>";
@@ -28,7 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C3246AF2E26DB83000E6E73 /* ScreenSaver.framework in Frameworks */,
+				3C55660F2E2A8E3E00BAE962 /* ScreenSaver.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,7 +38,7 @@
 		3C3246902E26D98B000E6E73 = {
 			isa = PBXGroup;
 			children = (
-				3C32469C2E26D98B000E6E73 /* GhostScreenSaver */,
+				3C5566092E2A8DC400BAE962 /* GhostScreenSaver */,
 				3C3246AC2E26DAE8000E6E73 /* Frameworks */,
 				3C32469B2E26D98B000E6E73 /* Products */,
 			);
@@ -87,7 +87,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				3C32469C2E26D98B000E6E73 /* GhostScreenSaver */,
+				3C5566092E2A8DC400BAE962 /* GhostScreenSaver */,
 			);
 			name = GhostScreenSaver;
 			packageProductDependencies = (
@@ -273,6 +273,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "GhostScreenSaver/animation-data.json";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = GhostScreenSaverView;
@@ -295,6 +296,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "GhostScreenSaver/animation-data.json";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = GhostScreenSaverView;

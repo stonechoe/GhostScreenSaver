@@ -144,7 +144,11 @@ class GhostScreenSaverView: ScreenSaverView {
     
     private func drawAttrStr(_ attrStr: AttributedString) {
         let text = NSAttributedString(attrStr)
-        let size = text.boundingRect(with: frame.size)
+        let size = text.boundingRect(
+            with: bounds.size, options: [
+                .usesLineFragmentOrigin,
+            ]
+        )
         text.draw(at: CGPoint(
             x: (frame.width - size.width) / 2,
             y: (frame.height - size.height) / 2,
