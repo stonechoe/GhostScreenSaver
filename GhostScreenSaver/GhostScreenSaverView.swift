@@ -17,7 +17,7 @@ class GhostScreenSaverView: ScreenSaverView {
 
     private enum Constants {
         // TODO: let these be optionated
-        static let fontSize: CGFloat = 10.0
+        static let fontSize: CGFloat = 12.0
         static let defaultColor: NSColor = .white
         static let highlightColor: NSColor = .systemBlue
 
@@ -32,12 +32,27 @@ class GhostScreenSaverView: ScreenSaverView {
 
     private var animationFrames: [AttributedString] = []
     private var currentFrameIndex: Int = 0
+    private var rect: CGRect = .init()
 
     // MARK: - Initialization
 
     override init?(frame: NSRect, isPreview: Bool) {
         super.init(frame: frame, isPreview: isPreview)
         loadAndProcessAnimationData()
+
+        let text = NSAttributedString(animationFrames[0])
+
+        let size = (text.boundingRect(
+            with: bounds.size, options: [
+                .usesLineFragmentOrigin,
+            ]
+        ))
+        let rect = CGRect(origin: CGPoint(
+            x: (bounds.width - size.width) / 2,
+            y: (bounds.height - size.height) / 2,
+        ), size: size.size)
+
+        self.rect = rect
     }
 
     @available(*, unavailable)
@@ -71,7 +86,8 @@ class GhostScreenSaverView: ScreenSaverView {
         let font = NSFont(name: "Menlo", size: Constants.fontSize) ?? NSFont.monospacedSystemFont(ofSize: Constants.fontSize, weight: .regular)
 
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center // Center each line of text.
+        paragraphStyle.alignment = .left
+        paragraphStyle.lineBreakMode = .byClipping
 
         let defaultAttributes: [NSAttributedString.Key: Any] = [
             .font: font,
@@ -142,14 +158,6 @@ class GhostScreenSaverView: ScreenSaverView {
 
     private func drawAttrStr(_ attrStr: AttributedString) {
         let text = NSAttributedString(attrStr)
-        let size = text.boundingRect(
-            with: bounds.size, options: [
-                .usesLineFragmentOrigin,
-            ]
-        )
-        text.draw(at: CGPoint(
-            x: (frame.width - size.width) / 2,
-            y: (frame.height - size.height) / 2,
-        ))
+        text.draw(in: rect)
     }
 }
