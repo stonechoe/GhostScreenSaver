@@ -13,6 +13,9 @@
 ```
 -->
 
+## Installation
+
+
 ## Acknowledgments
 
 - Original ghostty animation concept from [ghostty.org](https://ghostty.org)

@@ -11,15 +11,17 @@
 //  - https://github.com/johanremilien/PongScreenSaver
 
 import ScreenSaver
+import SwiftUI
+import AppKit
 
 class GhostScreenSaverView: ScreenSaverView {
     // MARK: - Constants & Configuration
 
     private enum Constants {
-        // TODO: let these be optionated
-        static let fontSize: CGFloat = 12.0
+        // Default values for when user defaults are not set
+        static let defaultFontSize: CGFloat = 12.0
         static let defaultColor: NSColor = .white
-        static let highlightColor: NSColor = .systemBlue
+        static let defaultHighlightColor: NSColor = .systemBlue
 
         static let animationDataFileName = "animation-data"
         static let animationDataFileExtension = "json"
@@ -27,21 +29,59 @@ class GhostScreenSaverView: ScreenSaverView {
         static let colorStartTag = "<c>"
         static let colorEndTag = "</c>"
     }
+    
+    // UserDefaults keys - should match those in GhostScreenSaverConfigView
+    private enum UserDefaultsKeys {
+        static let fontSize = "GhostScreenSaver.fontSize"
+        static let highlightColorRed = "GhostScreenSaver.highlightColor.red"
+        static let highlightColorGreen = "GhostScreenSaver.highlightColor.green"
+        static let highlightColorBlue = "GhostScreenSaver.highlightColor.blue"
+        static let highlightColorAlpha = "GhostScreenSaver.highlightColor.alpha"
+    }
 
     // MARK: - State Properties
 
     private var animationFrames: [AttributedString] = []
     private var currentFrameIndex: Int = 0
     private var rect: CGRect = .init()
+    
+    // MARK: - User Settings
+    
+    private var userDefaults: ScreenSaverDefaults {
+        return ScreenSaverDefaults(forModuleWithName: "GhostScreenSaver")!
+    }
+    
+    private var fontSize: CGFloat {
+        let savedSize = userDefaults.double(forKey: UserDefaultsKeys.fontSize)
+        return savedSize > 0 ? CGFloat(savedSize) : Constants.defaultFontSize
+    }
+    
+    private var highlightColor: NSColor {
+        let red = userDefaults.double(forKey: UserDefaultsKeys.highlightColorRed)
+        let green = userDefaults.double(forKey: UserDefaultsKeys.highlightColorGreen)
+        let blue = userDefaults.double(forKey: UserDefaultsKeys.highlightColorBlue)
+        let alpha = userDefaults.double(forKey: UserDefaultsKeys.highlightColorAlpha)
+        
+        if red == 0 && green == 0 && blue == 0 && alpha == 0 {
+            return Constants.defaultHighlightColor
+        } else {
+            return NSColor(red: red, green: green, blue: blue, alpha: alpha)
+        }
+    }
 
     // MARK: - Initialization
 
     override init?(frame: NSRect, isPreview: Bool) {
         super.init(frame: frame, isPreview: isPreview)
         loadAndProcessAnimationData()
-
+        updateLayout()
+    }
+    
+    private func updateLayout() {
+        // Recreate frames with current settings
+        guard !animationFrames.isEmpty else { return }
+        
         let text = NSAttributedString(animationFrames[0])
-
         let size = (text.boundingRect(
             with: bounds.size, options: [
                 .usesLineFragmentOrigin,
@@ -83,7 +123,7 @@ class GhostScreenSaverView: ScreenSaverView {
 
     // Corrected processRawFrames function
     private func processRawFrames(_ rawFrames: [[String]]) -> [AttributedString] {
-        let font = NSFont(name: "Menlo", size: Constants.fontSize) ?? NSFont.monospacedSystemFont(ofSize: Constants.fontSize, weight: .regular)
+        let font = NSFont(name: "Menlo", size: fontSize) ?? NSFont.monospacedSystemFont(ofSize: fontSize, weight: .regular)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
@@ -97,7 +137,7 @@ class GhostScreenSaverView: ScreenSaverView {
 
         let highlightAttributes: [NSAttributedString.Key: Any] = [
             .font: font,
-            .foregroundColor: Constants.highlightColor,
+            .foregroundColor: highlightColor,
             .paragraphStyle: paragraphStyle,
         ]
 
@@ -159,5 +199,20 @@ class GhostScreenSaverView: ScreenSaverView {
     private func drawAttrStr(_ attrStr: AttributedString) {
         let text = NSAttributedString(attrStr)
         text.draw(in: rect)
+    }
+    
+    // MARK: - Configuration
+    
+    override var hasConfigureSheet: Bool {
+        return true
+    }
+    
+    override var configureSheet: NSWindow? {
+        let hostingController = NSHostingController(rootView: GhostScreenSaverConfigView())
+        let window = NSWindow(contentViewController: hostingController)
+        window.title = "Ghost Screen Saver Settings"
+        window.styleMask = [NSWindow.StyleMask.titled, NSWindow.StyleMask.closable]
+        window.isReleasedWhenClosed = false
+        return window
     }
 }
